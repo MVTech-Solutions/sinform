@@ -1,11 +1,11 @@
-// Update with your config settings.
+require("dotenv").config()
 
 module.exports = {
     client: 'mysql2',
     connection: {
       database: 'sinform',
-      user:     'root',
-      password: ''
+      user:     process.env.dbuser,
+      password: process.env.dbpassword
     },
     pool: {
       min: 2,
