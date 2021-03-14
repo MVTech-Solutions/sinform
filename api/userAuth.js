@@ -26,14 +26,7 @@ module.exports = (app) => {
     const now = Date.now();
 
     payload = {
-      id: user.user_id,
-      email: user.user_email,
-      password: user.user_password,
-      name: user.user_name,
-      city: user.user_city,
-      state: user.user_state,
-      university: user.user_university,
-      stateUniversity: user.user_stateUniversity,
+      ...user,
       iat: now,
       exp: now + 1000 * 60 * 60 * 24,
     };
@@ -53,8 +46,8 @@ module.exports = (app) => {
         if (new Date(token.exp * 1000) > new Date()) {
           return res.status(200).json({
             success: true,
-            name: token.name,
-            email: token.email
+            name: token.user_name,
+            email: token.user_email
           });
         }
       }
