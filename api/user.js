@@ -118,12 +118,12 @@ module.exports = (app) => {
 
   const put = async (req, res) => {
     const {
-      email,
-      name,
-      city,
-      state,
-      university,
-      stateUniversity
+      user_email,
+      user_name,
+      user_city,
+      user_state,
+      user_university,
+      user_stateUniversity
     } = req.body;
     const user_id = req.params.id;
 
@@ -131,12 +131,12 @@ module.exports = (app) => {
       existsOrError(user_id, "user does not exist!");
 
       finalUser = await knex("user").update({
-        user_email: email,
-        user_name: name,
-        user_city: city,
-        user_state: state,
-        user_university: university,
-        user_stateUniversity: stateUniversity 
+        user_email,
+        user_name,
+        user_city,
+        user_state,
+        user_university,
+        user_stateUniversity
       })
         .where({ user_id })
 
