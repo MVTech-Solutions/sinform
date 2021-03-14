@@ -140,7 +140,7 @@ module.exports = (app) => {
       })
         .where({ user_id })
 
-      res.status(200).send(finalUser);
+      res.status(200).send({finalUser});
     } catch (err) {
       console.log(err)
       return res.status(400).send({ msg: err.msg });
