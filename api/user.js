@@ -116,6 +116,33 @@ module.exports = (app) => {
     }
   };
 
+
+  const patch = async (req, res) => {
+    let { user_password, user_confirm_password } = req.body;
+    const user_id = req.params.id;
+    try {
+      existsOrError(user_password, "Senha não informada");
+      existsOrError(user_confirm_password, "Confirmação de senha invalida");
+      equalsOrError(
+        user_password,
+        user_confirm_password,
+        "Senhas não conferem"
+      );
+
+      user_password = encryptPassword(user_password);
+      delete user_confirm_password;
+      const attUser = await knex("user")
+        .update({user_password})
+        .where({ user_id: user_id });
+      existsOrError(attUser, "user not found");
+
+      res.status(200).json(attUser);
+    } catch (err) {
+      console.log("erro => " + err)
+      return res.status(400).send(err);
+    }
+  };
+
   const put = async (req, res) => {
     const {
       user_email,
@@ -142,10 +169,9 @@ module.exports = (app) => {
 
       res.status(200).send({finalUser});
     } catch (err) {
-      console.log(err)
       return res.status(400).send({ msg: err.msg });
     }
   };
 
-  return { get, getById, post, put, remove };
+  return { get, getById, post, patch, put, remove };
 };
