@@ -4,7 +4,7 @@ module.exports = app => {
     })
     
     app.route("/user")
-      .get(app.api.user.get)
+      //.get(app.api.user.get)
       .post(app.api.user.post)
 
     app.route("/user/:id")
