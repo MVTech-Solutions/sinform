@@ -4,7 +4,8 @@ const consign = require("consign");
 const PORT = process.env.PORT || 5000
 
 consign()
-    .include("./config/middleware.js")
+    .include('./config/passport.js')
+    .then("./config/middleware.js")
     .then("./api/validator.js")
     .then("./api")
     .then("./config/routes.js")
