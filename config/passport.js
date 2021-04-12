@@ -3,6 +3,8 @@ const passport = require('passport')
 const passportJwt = require('passport-jwt')
 const { Strategy, ExtractJwt } = passportJwt
 
+const knex = require("../config/db");
+
 module.exports = app => {
     const params = {
         secretOrKey: authSecret,
@@ -10,7 +12,7 @@ module.exports = app => {
     }
 
     const strategy = new Strategy(params, (payload, done) => {
-        app.db('user')
+        knex('user')
             .where({user_id: payload.user_id})
             .first()
             .then(user => done(null, user ? {...payload} : false))
