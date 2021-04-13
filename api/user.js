@@ -1,5 +1,7 @@
 const knex = require("../config/db");
 const bcrypt = require("bcryptjs");
+const passportJwt = require('passport-jwt')
+const { ExtractJwt } = passportJwt
 const fs = require("fs")
 const { v4: uuid } = require("uuid");
 
@@ -18,6 +20,11 @@ module.exports = (app) => {
 
   const getById = async (req, res) => {
     try {
+      const payload = ExtractJwt.fromAuthHeaderAsBearerToken()
+      console.log({...payload})
+
+      if(payload.user_id !== req.params.id) res.status(403).json({msg: "Usuário não autorizado!"})
+
       existsOrError(req.params.id, "user não existe!");
 
       const getIdUser = await knex("user")
