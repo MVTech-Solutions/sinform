@@ -1,6 +1,7 @@
 const knex = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jwt-simple")
+const authSecret = process.env.authSecret;
 const fs = require("fs")
 const { v4: uuid } = require("uuid");
 
@@ -154,7 +155,7 @@ module.exports = (app) => {
       user_stateUniversity
     } = req.body;
     const user_id = req.params.id;
-    console.log(req.headers.authorization.split(" ")[1])
+    console.log(jwt.decode(req.headers.authorization.split(" ")[1], authSecret))
 
     try {
       existsOrError(user_id, "user does not exist!");
