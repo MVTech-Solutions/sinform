@@ -155,10 +155,11 @@ module.exports = (app) => {
       user_stateUniversity
     } = req.body;
     const user_id = req.params.id;
-    console.log(jwt.decode(req.headers.authorization.split(" ")[1], authSecret))
+    const payload = jwt.decode(req.headers.authorization.split(" ")[1], authSecret)
 
     try {
       existsOrError(user_id, "user does not exist!");
+      equalsOrError(user_id, payload.user_id, "Usuário não autorizado!!")
 
       finalUser = await knex("user").update({
         user_email,
