@@ -122,7 +122,9 @@ module.exports = (app) => {
   const patch = async (req, res) => {
     let { user_password, user_confirm_password } = req.body;
     const user_id = req.params.id;
+    const payload = jwt.decode(req.headers.authorization.split(" ")[1], authSecret)
     try {
+      equalsOrError(user_id.toString(), payload.user_id.toString(), "Usuário não autorizado!!")
       existsOrError(user_password, "Senha não informada");
       existsOrError(user_confirm_password, "Confirmação de senha invalida");
       equalsOrError(
