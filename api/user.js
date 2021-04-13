@@ -154,7 +154,7 @@ module.exports = (app) => {
       user_stateUniversity
     } = req.body;
     const user_id = req.params.id;
-    console.log(jwt.decode(req.headers['authorization'].split(" ")[1]))
+    console.log(jwt.decode(req.headers['authorization']))
 
     try {
       existsOrError(user_id, "user does not exist!");
