@@ -157,7 +157,7 @@ module.exports = (app) => {
     const user_id = req.params.id;
     const payload = jwt.decode(req.headers.authorization.split(" ")[1], authSecret)
 
-    console.log(payload.user_id)
+    console.log(payload.user_id === user_id)
 
     try {
       existsOrError(user_id, "user does not exist!");
