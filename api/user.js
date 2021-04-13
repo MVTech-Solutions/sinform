@@ -157,6 +157,8 @@ module.exports = (app) => {
     const user_id = req.params.id;
     const payload = jwt.decode(req.headers.authorization.split(" ")[1], authSecret)
 
+    console.log(payload.user_id)
+
     try {
       existsOrError(user_id, "user does not exist!");
       equalsOrError(user_id, payload.user_id, "Usuário não autorizado!!")
