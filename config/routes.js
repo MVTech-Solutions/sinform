@@ -9,7 +9,7 @@ module.exports = app => {
 
     app.route("/user/:id")
       .all(app.config.passport.authenticate())
-      .get(app.api.user.getById)
+      //.get(app.api.user.getById)
       .patch(app.api.user.patch)
       .put(app.api.user.put)
       .delete(app.api.user.remove)
