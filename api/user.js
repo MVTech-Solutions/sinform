@@ -154,7 +154,7 @@ module.exports = (app) => {
       user_stateUniversity
     } = req.body;
     const user_id = req.params.id;
-    console.log(req.headers['Authorization'])
+    console.log(req.headers)
 
     try {
       existsOrError(user_id, "user does not exist!");
