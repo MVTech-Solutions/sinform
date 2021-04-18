@@ -11,6 +11,7 @@ module.exports = (app) => {
 
   const getByUserId = async (req, res) => {
     try {
+      console.log(req.params.id)
       existsOrError(req.params.id, "userEvent does not exist!");
 
       const getIdUserEvent = await knex("userEvent")
