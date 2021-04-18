@@ -16,7 +16,7 @@ module.exports = (app) => {
 
       const getIdUserEvent = await knex("userEvent")
         .where({ user_id: req.params.id })
-      existsOrError(getIdUserEvent, "user not found");
+      /* existsOrError(getIdUserEvent, "user not found"); */
 
       res.json(getIdUserEvent);
     } catch (msg) {
