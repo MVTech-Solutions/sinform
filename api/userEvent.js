@@ -101,7 +101,9 @@ module.exports = (app) => {
         user_id: user_id,
         event_id: event_id,
       }).first()
-
+      if(modifiedUserEvent.userEvent_presence){
+        return res.status(400).send({error: true, msg: "Presença já cadastrada!"})
+      }
       const certificateFromDatabase = await knex("certificate")
         .where({ user_id:  user_id})
         .first()
