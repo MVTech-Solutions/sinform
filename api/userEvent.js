@@ -46,6 +46,13 @@ module.exports = (app) => {
 
     const user_id = userEvent.user_id;
     const event_id = userEvent.event_id;
+    const event_day = userEvent.event_day;
+
+    const checkConflict = await knex('userEvent').innerJoin('event', 'userEvent.event_id', 'event.event_id')
+      .where({user_id, event_date: event_day, event_type: 1})
+
+    console.log(checkConflict)
+    if(checkConflict.length > 0) return res.status(400).send({error: true, msg: "Conflito de horário!"})
 
     const typeEventFromDB = await knex("event")
       .where({event_id: event_id})
