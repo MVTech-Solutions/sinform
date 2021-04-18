@@ -1,4 +1,4 @@
-const authSecret = process.env.authSecret;
+
 const passport = require('passport')
 const passportJwt = require('passport-jwt')
 const { Strategy, ExtractJwt } = passportJwt
@@ -6,6 +6,7 @@ const { Strategy, ExtractJwt } = passportJwt
 const knex = require("../config/db");
 
 module.exports = app => {
+    const authSecret = process.env.authSecret;
     const params = {
         secretOrKey: authSecret,
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()

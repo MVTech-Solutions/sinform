@@ -133,5 +133,5 @@ module.exports = (app) => {
     }
   };
 
-  return { get, getByUserId, getByEventId, post, put, remove };
+  return { get, getByUserId, post, put, remove };
 };
