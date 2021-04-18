@@ -22,7 +22,7 @@ module.exports = app => {
 
     app.route("/userEvent/:id")
       .all(app.config.passport.authenticate())
-      .get(app.api.userEvent.getById)
+      .get(app.api.userEvent.getByUserId)
       .delete(app.api.userEvent.remove)
 
     app.route("/forgotPassword")
