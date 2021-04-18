@@ -26,11 +26,12 @@ module.exports = (app) => {
 
   const remove = async (req, res) => {
     try {
-      existsOrError(req.params.id, "userEvent does not exist!");
+      existsOrError(req.query.user_id, "event does not exist!");
+      existsOrError(req.query.event_id, "user does not exist!");
 
       const removeUserEvent = await knex("userEvent")
         .del()
-        .where({ userEvent_id: req.params.id });
+        .where({ event_id: req.query.event_id, user_id: req.query.user_id });
       existsOrError(removeUserEvent, "userEvent not found");
 
       res.status(204).send();

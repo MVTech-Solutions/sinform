@@ -19,12 +19,12 @@ module.exports = app => {
       .get(app.api.userEvent.get)
       .post(app.api.userEvent.post)
       .put(app.api.userEvent.put)
+      .delete(app.api.userEvent.remove)
 
     app.route("/userEvent/:id")
       .all(app.config.passport.authenticate())
       .get(app.api.userEvent.getByUserId)
-      .delete(app.api.userEvent.remove)
-
+    
     app.route("/forgotPassword")
       .post(app.api.redefinePassword.forgotPassword)
 
