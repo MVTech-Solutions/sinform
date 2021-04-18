@@ -48,25 +48,23 @@ module.exports = (app) => {
     const event_id = userEvent.event_id;
     const event_day = userEvent.event_day;
 
-    const checkConflict = await knex('userEvent').innerJoin('event', 'userEvent.event_id', 'event.event_id')
-      .where({user_id, event_date: event_day, event_type: 1})
-
-    console.log(checkConflict)
-    if(checkConflict.length > 0) return res.status(400).send({error: true, msg: "Conflito de horário!"})
-
     const typeEventFromDB = await knex("event")
-      .where({event_id: event_id})
+      .where({ event_id: event_id })
       .first();
 
     const sizeOfEvent = await knex("userEvent")
-      .where({event_id: event_id})
+      .where({ event_id: event_id })
 
     const verify = await knex("userEvent")
-      .where({ event_id: event_id, user_id: user_id})
+      .where({ event_id: event_id, user_id: user_id })
 
-    if(verify.length == 0){
-      if(typeEventFromDB.event_type){
-        if(sizeOfEvent.length <= 40){
+    if (verify.length == 0) {
+      if (typeEventFromDB.event_type) {
+        const checkConflict = await knex('userEvent').innerJoin('event', 'userEvent.event_id', 'event.event_id')
+          .where({ user_id, event_date: event_day, event_type: 1 })
+
+        if (checkConflict.length > 0) return res.status(400).send({ error: true, msg: "Conflito de horário!" })
+        if (sizeOfEvent.length <= 40) {
           try {
             const newUserEvent = await knex("userEvent").insert({
               user_id,
@@ -96,7 +94,7 @@ module.exports = (app) => {
       }
     } else {
       return res.status(500).json("Usuario já cadastrado em evento")
-    }    
+    }
   };
 
   const put = async (req, res) => {
@@ -108,11 +106,11 @@ module.exports = (app) => {
         user_id: user_id,
         event_id: event_id,
       }).first()
-      if(modifiedUserEvent.userEvent_presence){
-        return res.status(400).send({error: true, msg: "Presença já cadastrada!"})
+      if (modifiedUserEvent.userEvent_presence) {
+        return res.status(400).send({ error: true, msg: "Presença já cadastrada!" })
       }
       const certificateFromDatabase = await knex("certificate")
-        .where({ user_id:  user_id})
+        .where({ user_id: user_id })
         .first()
 
       if (modifiedUserEvent) {
@@ -121,23 +119,23 @@ module.exports = (app) => {
         }).first();
 
         certificateFromDatabase.certificate_participationTime = parseInt(certificateFromDatabase.certificate_participationTime) + parseInt(event.event_workload);
-      } else { 
-          return res.status(400).send({error: true, msg: 'Erro na requisição'})
+      } else {
+        return res.status(400).send({ error: true, msg: 'Erro na requisição' })
       }
 
       const attUserEvent = await knex("userEvent")
-        .update({userEvent_presence})
+        .update({ userEvent_presence })
         .where({ user_id: user_id, event_id: event_id });
       existsOrError(attUserEvent, "userEvent not found");
 
       const attCertificate = await knex("certificate")
-        .update({certificate_participationTime: certificateFromDatabase.certificate_participationTime})
+        .update({ certificate_participationTime: certificateFromDatabase.certificate_participationTime })
         .where({ user_id: user_id });
       existsOrError(attCertificate, "userEvent not found");
 
       res.status(200).send();
     } catch (msg) {
-        console.log(msg)
+      console.log(msg)
       return res.status(400).send(msg);
     }
   };
