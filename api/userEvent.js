@@ -93,39 +93,37 @@ module.exports = (app) => {
   };
 
   const put = async (req, res) => {
-    const userEvent = req.body;
+    const user_id = req.query.user_id;
+    const event_id = req.query.event_id;
+    const userEvent_presence = true;
     try {
-      userEvent_presence = true;
-
-      console.log(userEvent)
-
       const modifiedUserEvent = await knex("userEvent").where({
-        user_id: userEvent.user_id,
-        event_id: userEvent.event_id,
+        user_id: user_id,
+        event_id: event_id,
       }).first()
 
       const certificateFromDatabase = await knex("certificate")
-        .where({ user_id:  userEvent.user_id})
+        .where({ user_id:  user_id})
         .first()
 
       if (modifiedUserEvent) {
         const event = await knex("event").where({
-          event_id: userEvent.event_id,
+          event_id: event_id,
         }).first();
 
         certificateFromDatabase.certificate_participationTime = parseInt(certificateFromDatabase.certificate_participationTime) + parseInt(event.event_workload);
       } else { 
-          return res.status(400).send("oin");;
+          return res.status(400).send({error: true, msg: 'Erro na requisição'})
       }
 
       const attUserEvent = await knex("userEvent")
         .update({userEvent_presence})
-        .where({ user_id: userEvent.user_id, event_id: userEvent.event_id });
+        .where({ user_id: user_id, event_id: event_id });
       existsOrError(attUserEvent, "userEvent not found");
 
       const attCertificate = await knex("certificate")
         .update({certificate_participationTime: certificateFromDatabase.certificate_participationTime})
-        .where({ user_id: userEvent.user_id });
+        .where({ user_id: user_id });
       existsOrError(attCertificate, "userEvent not found");
 
       res.status(200).send();
