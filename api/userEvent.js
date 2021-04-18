@@ -9,14 +9,13 @@ module.exports = (app) => {
     return res.json(userEvent);
   };
 
-  const getById = async (req, res) => {
+  const getByUserId = async (req, res) => {
     try {
       existsOrError(req.params.id, "userEvent does not exist!");
 
       const getIdUserEvent = await knex("userEvent")
-        .where({ userEvent_id: req.params.id })
-        .first();
-      existsOrError(getIdUserEvent, "userEvent not found");
+        .where({ user_id: req.params.id })
+      existsOrError(getIdUserEvent, "user not found");
 
       res.json(getIdUserEvent);
     } catch (msg) {
@@ -134,5 +133,5 @@ module.exports = (app) => {
     }
   };
 
-  return { get, getById, post, put, remove };
+  return { get, getByUserId, getByEventId, post, put, remove };
 };
