@@ -3,7 +3,7 @@ module.exports = app => {
       res.status(200).send({msg: "Aplicação executando"})
     })
 
-    app.get("/event", (app.config.passport.authenticate(), app.api.event.getById))
+    app.get("/event/:id", (app.config.passport.authenticate(), app.api.event.getById))
     
     app.route("/user")
       //.get(app.api.user.get)
